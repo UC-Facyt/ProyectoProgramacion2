@@ -54,13 +54,25 @@ public:
 template <class T>
 inline void ArbolN<T>::impArbol() const{
 
+	bool flag;
 	NodoArb<T> *act;
 	Pila< NodoArb<T>* > q;
 
 	if(this->raizArb != NULL) {
 		q.apilar(this->raizArb);
+		flag = false;
 		while(!q.esVacia()) {
 			act = q.tope();
+
+			if(flag) {
+				flag = false;
+				q.desapilar();
+				if(act->obtHd() != NULL) q.apilar(act->obtHd());
+				else if(!q.esVacia()) {
+					flag = true; 
+					continue;
+				}
+			}	act = q.tope();
 
 			std::cout << act->obtInfo() << std::endl;
 
@@ -72,7 +84,7 @@ inline void ArbolN<T>::impArbol() const{
 				if(act->obtHd() != NULL)
 					q.apilar(act->obtHd());
 
-				else if(!q.esVacia()) q.desapilar();
+				else if(!q.esVacia()) flag = true;
 			}
 		}
 	}
