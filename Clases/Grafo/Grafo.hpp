@@ -6,8 +6,8 @@
 #include <cmath>
 #include <string>
 #include <limits>
-#include "../NodoV/NodoV.hpp"
-#include "../NodoA/NodoA.hpp"
+#include "../Nodo/NodoG/NodoV/NodoV.hpp"
+#include "../Nodo/NodoG/NodoA/NodoA.hpp"
 #include "../Lista/Lista.hpp"
 #include "../Cola/Cola.hpp"
 #include "../Pila/Pila.hpp"

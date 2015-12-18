@@ -18,8 +18,6 @@ int main(){
 	while(cin >> padre){
 		if (padre == "***"){
 			cin >> padre;
-			// Llamar primos para padre (que seria el nodo al que le calculamos los primos
-			// arbol.impArbol();
 			cout << "Caso #" << caso++ << endl;
 			imp_primos(arbol, padre);
 			cout << endl;

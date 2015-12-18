@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cmath>
-#include "../NodoArb/NodoArb.hpp"
+#include "../Nodo/NodoArb/NodoArb.hpp"
 #include "../Lista/Lista.hpp"
 #include "../Cola/Cola.hpp"
 #include "../Pila/Pila.hpp"
@@ -20,9 +20,9 @@ protected:
 	inline bool esHoja(NodoArb<T>*) const;													//Verifica si un nodo es hoja
 	bool esCompleto(NodoArb<T>*) const;	 													//Verifica si el arbol es completo
 	bool igual(const NodoArb<T>*, const NodoArb<T>*) const;									//Verifica si 2 arboles son iguales
-	bool isomorfo(NodoArb<T>*, NodoArb<T>*) const;								//Verifica si 2 arboles son isomorfos
+	bool isomorfo(NodoArb<T>*, NodoArb<T>*) const;											//Verifica si 2 arboles son isomorfos
 	void contiene(NodoArb<T>*, NodoArb<T>*, bool&) const;									//Verifica si un arbol contiene a otro
-	bool lleno(NodoArb<T>*, int, int&, bool&) const;									//Verifica si un arbol es lleno
+	bool lleno(NodoArb<T>*, int, int&, bool&) const;										//Verifica si un arbol es lleno
 	int altura(NodoArb<T>*) const;															//Retorna la altura de un arbol
 	NodoArb<T>* copiar(const NodoArb<T>*, int&) const;										//Para copiar el arbol
 	void preorden(const NodoArb<T>*, Lista<T>&) const;										//Para generar lista en preorden
