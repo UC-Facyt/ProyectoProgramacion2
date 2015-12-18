@@ -18,7 +18,6 @@ int main(){
 	while(cin >> padre){
 		if (padre == "***"){
 			cin >> padre;
-			arbol.impArbol();
 			cout << "Caso #" << caso++ << endl;
 			imp_primos(arbol, padre);
 			cout << endl;
