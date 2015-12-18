@@ -37,6 +37,7 @@ int main(){
 template <class T>
 void imp_primos(ArbolN<T>& arb, const T& e) {
 
+	int max;
 	Lista< ntupla<T> > out;
 	ntupla<T> res;
 
@@ -45,18 +46,14 @@ void imp_primos(ArbolN<T>& arb, const T& e) {
 		cout << "Los primos de " << e << " son:" << endl;
 		while(!out.esVacia()) {
 			res = out.consultar(1);
-			if(res.h.longitud() > 1) {
-				for(int i=1, n=res.h.longitud(); i <= n; i++) {
-					cout << res.h.consultar(1);
-					if(i == n - 1) 	cout << " y ";
-					else if(i == n)	cout << " "  ;
-					else cout << ", ";
-					
-					res.h.eliminar(1);
-				}	cout << "(hijos(as) de " << res.p << ")." << endl;
+			max = res.h.longitud();
+			for(int i=1; i <= max; i++) {
+				cout << res.h.consultar(1);
+				cout << ((i < max - 1) ? ", " : ((i == max) ? " " : " y "));
+				res.h.eliminar(1);
 			}
-			else
-				cout << res.h.consultar(1) << " (hijo(a) de " << res.p << ")." << endl;
+			cout << ((max > 1) ? "(hijos(as) de " : " (hijo(a) de ");
+			cout << res.p << ")." << endl;
 			out.eliminar(1);
 		}
 	}

@@ -40,7 +40,7 @@ public:
 	void nulo();
 	void insertarHijos(const T&, Cola<T>&);
 
-	Lista< ntupla<T> > magic(const T&) const;
+	Lista< ntupla<T> > magic(const T&) const;		// <-- Funcion que determina los primos
 
 	//Sobrecarga de operadores
 	//~ template <class t>
