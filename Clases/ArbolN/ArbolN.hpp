@@ -2,6 +2,7 @@
 #define ARBOLN_H
 
 #include <iostream>
+#include <vector>
 #include <cmath>
 #include "../Nodo/NodoArb/NodoArb.hpp"
 #include "../Lista/Lista.hpp"
@@ -54,37 +55,44 @@ public:
 template <class T>
 inline void ArbolN<T>::impArbol() const{
 
+	int nivel;
 	bool flag;
+	std::vector<bool> mem(100, false);
 	NodoArb<T> *act;
 	Pila< NodoArb<T>* > q;
 
 	if(this->raizArb != NULL) {
-		q.apilar(this->raizArb);
+		nivel = 0;
 		flag = false;
+		q.apilar(this->raizArb);
 		while(!q.esVacia()) {
 			act = q.tope();
-
 			if(flag) {
 				flag = false;
-				q.desapilar();
-				if(act->obtHd() != NULL) q.apilar(act->obtHd());
-				else if(!q.esVacia()) {
-					flag = true; 
-					continue;
+				q.desapilar(), nivel--;
+				if(act->obtHd() != NULL) q.apilar(act->obtHd()), nivel++;
+				else {
+					mem[nivel+1] = false;
+					if(!q.esVacia()) flag = true;
 				}
-			}	act = q.tope();
-
-			std::cout << act->obtInfo() << std::endl;
-
-			if(act->obtHi() != NULL)
-				q.apilar(act->obtHi());
-
+			}
 			else {
-				q.desapilar();
-				if(act->obtHd() != NULL)
-					q.apilar(act->obtHd());
-
-				else if(!q.esVacia()) flag = true;
+				for(int i=1; i < nivel; i++) std::cout << (mem[i] ? "|    " : "     ");
+				if(nivel > 0) std::cout << "|----";
+				std::cout << act->obtInfo() << std::endl;
+				if(act->obtHi() != NULL) {
+					if(act->obtHi()->obtHd() != NULL) mem[nivel] = true;
+					q.apilar(act->obtHi());
+					nivel++;
+				}
+				else {
+					q.desapilar(), nivel--;
+					if(act->obtHd() != NULL) q.apilar(act->obtHd()), nivel++;
+					else {
+						mem[nivel+1] = false;
+						if(!q.esVacia()) flag = true;
+					}
+				}
 			}
 		}
 	}
