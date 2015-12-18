@@ -18,6 +18,7 @@ int main(){
 	while(cin >> padre){
 		if (padre == "***"){
 			cin >> padre;
+			arbol.impArbol();
 			cout << "Caso #" << caso++ << endl;
 			imp_primos(arbol, padre);
 			cout << endl;
@@ -41,7 +42,7 @@ void imp_primos(ArbolN<T>& arb, const T& e) {
 	Lista< ntupla<T> > out;
 	ntupla<T> res;
 
-	out = arb.magic(e);
+	out = arb.primos(e);
 	if(!out.esVacia()) {
 		cout << "Los primos de " << e << " son:" << endl;
 		while(!out.esVacia()) {
@@ -52,7 +53,7 @@ void imp_primos(ArbolN<T>& arb, const T& e) {
 				cout << ((i < max - 1) ? ", " : ((i == max) ? " " : " y "));
 				res.h.eliminar(1);
 			}
-			cout << ((max > 1) ? "(hijos(as) de " : " (hijo(a) de ");
+			cout << ((max > 1) ? "(hijos(as) de " : "(hijo(a) de ");
 			cout << res.p << ")." << endl;
 			out.eliminar(1);
 		}

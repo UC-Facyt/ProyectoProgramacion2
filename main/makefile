@@ -2,14 +2,12 @@
 
 #Variables
 CC = g++
-NAME = main
+NAME = primos
 
 #Instrucciones
 all:
 	$(CC) $(NAME).cpp -o $(NAME)
-	
 run:
 	./$(NAME) < entrada.in
-
 clean:
-	rm $(NAME)
+	rm -rf $(NAME) *.o

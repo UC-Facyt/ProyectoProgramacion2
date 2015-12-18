@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cmath>
-#include "../NodoArb/NodoArb.hpp"
+#include "../Nodo/NodoArb/NodoArb.hpp"
 #include "../Lista/Lista.hpp"
 #include "../Cola/Cola.hpp"
 #include "../Pila/Pila.hpp"
@@ -23,7 +23,6 @@ protected:
 protected:
 	//Metodos Auxiliares
 	void nulo(NodoArb<T>*);													//Para borrar la instancia (Podar el arbol)
-	void impArbol(NodoArb<T>*, int, bool&, Lista<int>&, std::ostream&) const;
 	NodoArb<T>* localizar(NodoArb<T>*, const T&) const;
 	void localizar(NodoArb<T>*, const T&, NodoArb<T>*&) const;
 	NodoArb<T>* localizarUltimoHijo(NodoArb<T>*) const;
@@ -31,7 +30,7 @@ protected:
 public:
 	//Constructores
 	inline ArbolN(): raizArb(0), pesoArb(0) {}
-	
+
 	//Observadores
 	inline void impArbol() const;
 	Lista<T> niveles() const;
@@ -40,12 +39,12 @@ public:
 	void nulo();
 	void insertarHijos(const T&, Cola<T>&);
 
-	Lista< ntupla<T> > magic(const T&) const;		// <-- Funcion que determina los primos
+	Lista< ntupla<T> > primos(const T&) const;		// <-- Funcion que determina los primos
 
 	//Sobrecarga de operadores
 	//~ template <class t>
 	//~ friend std::ostream& operator << (std::ostream&, const ArbolN<t>&);
-	
+
 	//Destructor
 	inline ~ArbolN();
 };
@@ -54,45 +53,28 @@ public:
 /*Observadores*/
 template <class T>
 inline void ArbolN<T>::impArbol() const{
-	bool f = false;
-	// bool *arr = new bool[this->peso];
-	Lista<int> l;
-	impArbol(raizArb, 0, f, l, std::cout);
-	// delete[] arr;
-}
 
-template <class T>
-void ArbolN<T>::impArbol(NodoArb<T> *act, int n, bool &f, Lista<int> &l, std::ostream &o) const{
-	if(act){
-		for(int i=1; i<n; i++){
-			o << (l.obtPos(i) ? "|  " : "   ");
-		}
-		
-		if(n>0){
-			if(f){
-				o << "`--" << act->obtInfo() << ", Pa: " << (act->obtPa() != NULL ? act->obtPa()->obtInfo() : "") << std::endl;
-				f = false;
-			}else{
-				o << "|--" << act->obtInfo() << ", Pa: " << (act->obtPa() != NULL ? act->obtPa()->obtInfo() : "") << std::endl;
+	NodoArb<T> *act;
+	Pila< NodoArb<T>* > q;
+
+	if(this->raizArb != NULL) {
+		q.apilar(this->raizArb);
+		while(!q.esVacia()) {
+			act = q.tope();
+
+			std::cout << act->obtInfo() << std::endl;
+
+			if(act->obtHi() != NULL)
+				q.apilar(act->obtHi());
+
+			else {
+				q.desapilar();
+				if(act->obtHd() != NULL)
+					q.apilar(act->obtHd());
+
+				else if(!q.esVacia()) q.desapilar();
 			}
-		}else{
-			o << act->obtInfo() << ", Pa: " << (act->obtPa() != NULL ? act->obtPa()->obtInfo() : "") << std::endl;
 		}
-		
-		// if(!((act->obtHi() || act->obtHd()) && (!act->obtHi() || !act->obtHd()))){}
-			
-		
-		if(act->obtHd() != NULL && act->obtHd()->obtHd() == NULL){
-			f = true;
-		}else{
-			l.insertar(n, l.longitud()+1);
-		}
-		
-		impArbol(act->obtHi(), n+1, f, l, o);
-		l.eliminar(l.obtPos(n));
-		impArbol(act->obtHd(), n, f, l, o);
-	}else{
-		// f = true;
 	}
 }
 
@@ -101,7 +83,7 @@ Lista<T> ArbolN<T>::niveles() const{
 	Lista<T> res;
 	Cola< NodoArb<T>* > q;
 	NodoArb<T>* act;
-	q.encolar(raizArb);		
+	q.encolar(raizArb);
 	while(!q.esVacia()){
 		act = q.frente();
 		q.desencolar();
@@ -141,7 +123,7 @@ void ArbolN<T>::nulo(){
 template <class T>
 void ArbolN<T>::insertarHijos(const T &padre, Cola<T> &hijos){
 	NodoArb<T> *act = 0, *papa = 0;
-	if(raizArb == NULL){		
+	if(raizArb == NULL){
 		if(!hijos.esVacia()){
 			raizArb = new NodoArb<T>(padre, 0, new NodoArb<T>(hijos.desencolar()));
 			act = raizArb->obtHi();
@@ -205,7 +187,7 @@ NodoArb<T>* ArbolN<T>::localizarUltimoHijo(NodoArb<T> *act) const{
 // template <class T>
 // std::ostream& operator << (std::ostream &o, const ArbolN<T> &a){
 	// bool f = false;
-	// bool *arr = new bool[a.peso];	
+	// bool *arr = new bool[a.peso];
 	// a.impArbol(a.raizArb, 0, f, arr, o);
 	// return(o);
 // }
@@ -214,17 +196,17 @@ NodoArb<T>* ArbolN<T>::localizarUltimoHijo(NodoArb<T> *act) const{
 //Destructor
 template <class T>
 inline ArbolN<T>::~ArbolN(){
-	nulo(); 
+	nulo();
 }
 
 template <class T>
-Lista< ntupla<T> > ArbolN<T>::magic(const T& e) const {
-	
+Lista< ntupla<T> > ArbolN<T>::primos(const T& e) const {
+
 	NodoArb<T> *act(0), *father(0), *pri(0);
 	Lista< ntupla<T> > output;
 	ntupla<T> swag;
 
-	if((act = localizar(raizArb, e)) != NULL) { 
+	if((act = localizar(raizArb, e)) != NULL) {
 		father = act->obtPa(); // Father
 		if(father != NULL) {
 			// Uncle Grandpa
