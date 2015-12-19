@@ -1,10 +1,12 @@
-#Makefile
+# Makefile Proyecto de Programacion II
+# Oswaldo Capriles
+# Victor Tortolero
 
-#Variables
+# Variables
 CC = g++
 NAME = primos
 
-#Instrucciones
+# Instrucciones
 all:
 	$(CC) $(NAME).cpp -o $(NAME)
 run:

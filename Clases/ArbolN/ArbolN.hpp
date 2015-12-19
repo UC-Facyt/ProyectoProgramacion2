@@ -52,12 +52,13 @@ public:
 
 
 /*Observadores*/
+// Impresion del Arbol
 template <class T>
 inline void ArbolN<T>::impArbol() const{
 
 	int nivel;
 	bool flag;
-	std::vector<bool> mem(100, false);
+	Lista<int> mem;
 	NodoArb<T> *act;
 	Pila< NodoArb<T>* > q;
 
@@ -67,32 +68,31 @@ inline void ArbolN<T>::impArbol() const{
 		q.apilar(this->raizArb);
 		while(!q.esVacia()) {
 			act = q.tope();
-			if(flag) {
+			if(!flag) {
+				if(nivel > 0) {
+					for(int i=1; i < nivel; i++) 
+						std::cout << (mem.obtPos(i) ? "|    " : "     ");
+					if(act->obtHd() == NULL) {
+						std::cout << "`----";
+						mem.eliminar(mem.obtPos(nivel));
+					}	
+					else std::cout << "|----";
+				}	std::cout << act->obtInfo() << std::endl;
+			}
+			if(act->obtHi() == NULL or flag) {
 				flag = false;
-				q.desapilar(), nivel--;
-				if(act->obtHd() != NULL) q.apilar(act->obtHd()), nivel++;
+				q.desapilar();
+				if(act->obtHd() != NULL) q.apilar(act->obtHd());
 				else {
-					mem[nivel+1] = false;
 					if(!q.esVacia()) flag = true;
+					mem.eliminar(nivel--);
 				}
 			}
 			else {
-				for(int i=1; i < nivel; i++) std::cout << (mem[i] ? "|    " : "     ");
-				if(nivel > 0) std::cout << "|----";
-				std::cout << act->obtInfo() << std::endl;
-				if(act->obtHi() != NULL) {
-					if(act->obtHi()->obtHd() != NULL) mem[nivel] = true;
-					q.apilar(act->obtHi());
-					nivel++;
-				}
-				else {
-					q.desapilar(), nivel--;
-					if(act->obtHd() != NULL) q.apilar(act->obtHd()), nivel++;
-					else {
-						mem[nivel+1] = false;
-						if(!q.esVacia()) flag = true;
-					}
-				}
+				nivel++;
+				q.apilar(act->obtHi());
+				if(act->obtHi()->obtHd() != NULL) 
+					mem.insertar(nivel, mem.longitud()+1);
 			}
 		}
 	}
