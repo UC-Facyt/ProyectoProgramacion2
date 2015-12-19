@@ -2,6 +2,7 @@
 #define ARBOLN_H
 
 #include <iostream>
+#include <vector>
 #include <cmath>
 #include "../Nodo/NodoArb/NodoArb.hpp"
 #include "../Lista/Lista.hpp"
@@ -51,40 +52,47 @@ public:
 
 
 /*Observadores*/
+// Impresion del Arbol
 template <class T>
 inline void ArbolN<T>::impArbol() const{
 
+	int nivel;
 	bool flag;
+	Lista<int> mem;
 	NodoArb<T> *act;
 	Pila< NodoArb<T>* > q;
 
 	if(this->raizArb != NULL) {
-		q.apilar(this->raizArb);
+		nivel = 0;
 		flag = false;
+		q.apilar(this->raizArb);
 		while(!q.esVacia()) {
 			act = q.tope();
-
-			if(flag) {
+			if(!flag) {
+				if(nivel > 0) {
+					for(int i=1; i < nivel; i++) 
+						std::cout << (mem.obtPos(i) ? "|    " : "     ");
+					if(act->obtHd() == NULL) {
+						std::cout << "`----";
+						mem.eliminar(mem.obtPos(nivel));
+					}	
+					else std::cout << "|----";
+				}	std::cout << act->obtInfo() << std::endl;
+			}
+			if(act->obtHi() == NULL or flag) {
 				flag = false;
 				q.desapilar();
 				if(act->obtHd() != NULL) q.apilar(act->obtHd());
-				else if(!q.esVacia()) {
-					flag = true; 
-					continue;
+				else {
+					if(!q.esVacia()) flag = true;
+					mem.eliminar(nivel--);
 				}
-			}	act = q.tope();
-
-			std::cout << act->obtInfo() << std::endl;
-
-			if(act->obtHi() != NULL)
-				q.apilar(act->obtHi());
-
+			}
 			else {
-				q.desapilar();
-				if(act->obtHd() != NULL)
-					q.apilar(act->obtHd());
-
-				else if(!q.esVacia()) flag = true;
+				nivel++;
+				q.apilar(act->obtHi());
+				if(act->obtHi()->obtHd() != NULL) 
+					mem.insertar(nivel, mem.longitud()+1);
 			}
 		}
 	}

@@ -9,7 +9,7 @@ using namespace std;
 template <class T>
 void imp_primos(ArbolN<T>&, const T& e);
 
-int main(){	
+int main(){
 	ArbolN<string> arbol;
 	Cola<string> hijos;
 	string padre, hijo;
@@ -30,7 +30,7 @@ int main(){
 		}
 	}
 
-	
+
 	return(0);
 }
 
