@@ -168,7 +168,7 @@ void ArbolN<T>::insertarHijos(const T &padre, Cola<T> &hijos){
 		act->modHd(new NodoArb<T>(hijos.desencolar(), papa));
 		act = act->obtHd();
 	}
-	hijos.~Cola();
+	hijos.reset();
 }
 
 template <class T>

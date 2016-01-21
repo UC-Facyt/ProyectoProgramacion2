@@ -5,10 +5,11 @@
 # Variables
 CC = g++
 NAME = primos
+FLAGS = -Wall -Wextra
 
 # Instrucciones
 all:
-	$(CC) $(NAME).cpp -o $(NAME)
+	$(CC) $(NAME).cpp -o $(NAME) $(FLAGS)
 run:
 	./$(NAME) < entrada.in
 clean:

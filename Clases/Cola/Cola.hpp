@@ -32,6 +32,8 @@ public:
 	friend std::ostream& operator << (std::ostream&, const Cola<t>&);
 	//~ friend std::istream& operator >> (std::istream&, Lista<T>&);
 	
+	inline void reset();
+
 	//Destructor
 	~Cola();
 };
@@ -135,6 +137,10 @@ std::ostream& operator << (std::ostream &output, const Cola<T> &l){
 }
 /*Fin de Sobrecarga*/
 
+template <class T>
+void Cola<T>::reset() {
+	this->~Cola();
+}
 
 /*Destructor*/
 template <class T>
